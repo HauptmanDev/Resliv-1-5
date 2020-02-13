@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 3</title>
+</head>
+<body>
+<script>
+    const universalPromise = (url) => {
+        return new Promise((resolve) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.responseType = 'json';
+            xhr.send();
+            xhr.onload = function () {
+                if (xhr.status !== 200) {
+                    alert(`Ошибка ${xhr.status}: ${xhr.statusText}`)
+                } else {
+                    resolve(xhr.response)
+                }
+            };
+        })
+    };
+    const firstRequest = () => {
+        let url = 'https://jsonplaceholder.typicode.com/albums/1';
+        return universalPromise(url)
+    };
+    const secondRequest = () => {
+        let url = 'https://jsonplaceholder.typicode.com/albums/2';
+        return universalPromise(url)
+    };
+
+    Promise.all([firstRequest(), secondRequest()]).then(res => console.log('оба ответа получены'))
+
+</script>
+</body>
+</html>

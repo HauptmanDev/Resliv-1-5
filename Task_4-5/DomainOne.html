@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 4-5</title>
+</head>
+<body>
+
+<div>
+    <button id="send">Send</button>
+    <button id="remove">Remove</button>
+    <button id="read">Read</button>
+</div>
+
+<iframe id="myIframe"
+        src="DomainTwo.html">
+    <span>Браузер не поддерживает iframe.</span>
+</iframe>
+<script>
+
+    const src = "DomainTwo.html";
+    addEventListener("DOMContentLoaded", function () {
+        'use strict';
+        window.addEventListener('message', function (e) {
+            let message = e.isTrusted;
+            console.log(message)
+        });
+
+        const myIframe = document.getElementById('myIframe').contentWindow;
+        const sendButton = document.getElementById('send');
+        const removeButton = document.getElementById('remove');
+        const readButton = document.getElementById('read');
+
+        const actions = {};
+        actions.createText = "localStorage.setItem('SRR')";
+        let callbacks = {
+            "sendMessageCallback": function () {
+                console.log('send')
+            },
+            "removeCallback": function () {
+                console.log('remove')
+            },
+            "readCallback": function () {
+                console.log('read')
+            }
+        };
+        window.addEventListener('message', function (event) {
+            try {
+                callbacks[event.data]();
+            } catch (error) {
+                console.error("Invalid callback")
+            }
+        });
+
+        let sendMessage = (e)=> {
+            e.preventDefault();
+            actions.action = 'send';
+            actions.key = '3';
+            actions.value = 'TextForLocalStorage';
+            actions.success = "sendMessageCallback";
+            myIframe.postMessage(actions, src);
+        };
+
+        let removeMessage = (e) => {
+            e.preventDefault();
+            actions.action = 'remove';
+            actions.key = '3';
+            actions.val = '';
+            actions.success = "removeCallback";
+            myIframe.postMessage(actions, src);
+        };
+
+        let readMessage = (e) => {
+            e.preventDefault();
+            actions.action = 'read';
+            actions.key = '3';
+            actions.value = '';
+            actions.success = "readCallback";
+            myIframe.postMessage(actions, src);
+        };
+
+        sendButton.addEventListener('click', sendMessage);
+        removeButton.addEventListener('click', removeMessage);
+        readButton.addEventListener('click', readMessage);
+    });
+</script>
+</body>
+</html>

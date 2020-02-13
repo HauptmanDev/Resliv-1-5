@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task2</title>
+    <style>
+        .red {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<input type="text" name="name" id="name_input" value="Xxxx">
+
+<script>
+    let styleInput = document.getElementById("name_input");
+    styleInput.addEventListener('input', function (event) {
+        if (event.currentTarget.value === 'Xxxx') {
+            styleInput.className = ''
+        } else {
+            styleInput.className = 'red'
+        }
+    })
+</script>
+
+
+</body>
+</html>

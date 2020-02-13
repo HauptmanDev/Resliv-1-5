@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<form class="URL">
+    <div>
+        <span>Size</span>
+        <input type='radio' name="size" value="S"><span>S</span>
+        <input type='radio' name="size" value="M"><span>M</span>
+        <input type='radio' name="size" value="L"><span>L</span>
+    </div>
+    <br>
+    <div>
+        <span>Color</span>
+        <input type='checkbox' name="color" value="1"><span>1</span>
+        <input type='checkbox' name="color" value="2"><span>2</span>
+        <input type='checkbox' name="color" value="3"><span>3</span>
+        <input type='checkbox' name="color" value="4"><span>4</span>
+        <input type='checkbox' name="color" value="5"><span>5</span>
+    </div>
+    <br>
+    <div>
+        <span>Manufacturer</span>
+        <select name="Values" multiple>
+            <option name="manufacturer" value="aaa">aaa</option>
+            <option name="manufacturer" value="b&c">b&c</option>
+            <option name="manufacturer" value="ddd">ddd</option>
+            <option name="manufacturer" value="eee">eee</option>
+        </select>
+    </div>
+    <br>
+    <div>
+        <input type='checkbox' checked><span>Sales</span>
+    </div>
+</form>
+<script>
+    let url = new URL('http://nosymbol.com/filter?size=L&color=1&color=5&manufacturer=aaa&manufacturer=ddd');
+    let size = url.searchParams.get('size');
+    let color = url.searchParams.getAll('color');
+    let manufacturer = url.searchParams.getAll('manufacturer');
+
+    const sizeInputs = document.querySelectorAll("input[name='size']");
+    const colorInputs = document.querySelectorAll("input[name='color']");
+    const manufacturerInputs = document.querySelectorAll("option[name='manufacturer']");
+
+    switch (size) {
+        case 'S':
+            sizeInputs.forEach(el => {
+                if (el.value === 'S') {
+                    return el.setAttribute('checked', 'true')
+                }
+            });
+            break;
+        case 'M':
+            sizeInputs.forEach(el => {
+                if (el.value === 'M') {
+                    return el.setAttribute('checked', 'true')
+                }
+            });
+            break;
+        case 'L':
+            sizeInputs.forEach(el => {
+                if (el.value === 'L') {
+                    return el.setAttribute('checked', 'true')
+                }
+            });
+            break;
+        default :
+            sizeInputs.forEach(el => {
+                if (el.value === '') {
+                    return el.setAttribute('checked', 'false')
+                }
+            });
+            break;
+    }
+    colorInputs.forEach(el => {
+        if (color.includes(el.value)) {
+            el.checked = true;
+        }
+    });
+    manufacturerInputs.forEach(el => {
+        if (manufacturer.includes(el.value)) {
+            el.selected = true;
+        }
+    });
+
+    function inputHandler({target}) {
+        if (!target.hasAttribute("name")) return;
+        let url = `http://nosymbol.com/filter?${new URLSearchParams(new FormData(target.form))}`;
+        console.log(url);
+    }
+
+    addEventListener("input", inputHandler);
+</script>
+</body>
+</html>
